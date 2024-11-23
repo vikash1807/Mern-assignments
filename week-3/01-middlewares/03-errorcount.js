@@ -23,4 +23,12 @@ app.get('/errorCount', function(req, res) {
   res.status(200).json({ errorCount });
 });
 
+// error handling middleware, always added to the end of all route handlers to catch error
+// form any previous middleware.
+app.use(function(err, req, res, next) {
+  errorCount++;
+  res.status(404).send({msg : "something wrong happened."});
+});
+
+// app.listen(3000);
 module.exports = app;

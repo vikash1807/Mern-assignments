@@ -6,6 +6,8 @@ It needs to support two types of users -
 1. Admins
 2. Users
 
+mongodb+srv://vikash2024:Vikash2024@cluster0.dib0h.mongodb.net
+
 Admins are allowed to sign up, create courses.
 Users are allowed to sign up, view courses, purchase courses.
 This in the real world would translate to an app like udemy.

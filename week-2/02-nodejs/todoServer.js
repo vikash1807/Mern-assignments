@@ -45,5 +45,65 @@
   const app = express();
   
   app.use(bodyParser.json());
+
+  const data = [];
+
+  app.get('/todos', (req, res) => {
+    res.json(data);
+  });
+
+  app.get('/todos/:id', (req,res) =>{
+    let id = parseInt(req.params.id);
+    // console.log(id);
+    let ind = data.findIndex(value => id === value.id);
+
+    //*** or write it like this [let ind = data.findIndex((value) =>{return id === value.id});] ***
+
+    if(ind != -1) {
+      res.status(200).json(data[ind]);
+    } else {
+      res.status(404).json({error : "404 not found"});
+    }
+  })
+  
+  app.post('/todos', (req,res) =>{
+      let todoList = req.body;
+      let id = Math.floor(Math.random()*1000);
+      todoList.id = id;
+      data.push(todoList);
+      res.status(201).json({"id" : id});
+      // console.log(data);
+  })
+
+  app.put('/todos/:id', (req,res) =>{
+    let todoList = req.body;
+    let id = parseInt(req.params.id);
+    let ind = data.findIndex(value => id === value.id);
+    if(ind !=-1) {
+      todoList.id = id;
+      data[ind] = todoList;
+      res.status(200).send('updated succuesfully');
+    } else {
+      res.status(404).send('error found');
+    }
+  })
+  
+  app.delete('/todos/:id', (req,res) =>{
+    let id = parseInt(req.params.id);
+    let ind = data.findIndex(value => id === value.id);
+    // console.log(ind);
+    if(ind !=-1) {
+      data.splice(ind,1);
+      res.status(200).send('deleted succesfully');
+    } else {
+      res.status(404).send('error found');
+    }
+  })
+
+  app.all('*', (req, body)=>{
+    res.status(404).send('error found');
+  })  
+
+  app.listen(3001, ()=>{console.log('listening on port 3001')});
   
   module.exports = app;
